@@ -1,5 +1,6 @@
 package com.example.findmydorm;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,20 +10,24 @@ import java.util.List;
 public class ReviewService {
 
     @Autowired
+    private  DormRepository dormRepository;
+
+    @Autowired
     private ReviewRepository reviewRepository;
 
-    // ตัวอย่าง method ที่ใช้ค้นหาความคิดเห็นตาม dormitoryId
-    public List<Review> getReviewsByDormitory(String dormitoryId) {
-        return reviewRepository.findByDormitoryId(dormitoryId);  // ใช้ dormitoryId แทน dormId
+    public Review addReview(Review review) {
+        // เช็คว่าหอพักนี้มีอยู่จริงหรือไม่
+        boolean exists = dormRepository.existsById(review.getDormId());
+        if (!exists) {
+            throw new IllegalArgumentException("ไม่พบหอพักที่มี ID นี้: " + review.getDormId());
+        }
+
+        // ถ้ามีอยู่จริงค่อยบันทึก
+        return reviewRepository.save(review);
     }
 
-    // เมธอดที่ใช้บันทึกรีวิวใหม่
-    public Review saveReview(Review review) {
-        return reviewRepository.save(review);  // บันทึกรีวิวลงในฐานข้อมูล
-    }
 
-    // เมธอดที่ใช้ดึงรีวิวทั้งหมดของหอพักนั้นๆ โดยใช้ dormitoryId
-    public List<Review> getReviewsByDormitoryId(String dormitoryId) {
-        return reviewRepository.findByDormitoryId(dormitoryId);  // ดึงรีวิวตาม dormitoryId
+    public List<Review> getReviewsByDormId(String dormId) {
+        return reviewRepository.findByDormId(dormId);
     }
 }

@@ -4,6 +4,7 @@ package com.example.findmydorm;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,22 +25,23 @@ public class Dorm {
     private List<Obj> security;
 
 
-    public Dorm(String name, int price, int distance, String tel, String address,
-                List<String> images, List<String> furniture,
-                List<Obj> security, List<Obj> facilities, List<Obj> waterRate) {
+
+
+    public Dorm(String name, int distance, int price, String tel, String address, List<String> images, List<Obj> waterRate, List<String> furniture, List<Obj> facilities, List<Obj> security) {
         this.name = name;
-        this.price = price;
         this.distance = distance;
+        this.price = price;
         this.tel = tel;
         this.address = address;
         this.images = images;
-        this.furniture = furniture;
-        this.security = security;
-        this.facilities = facilities;
         this.waterRate = waterRate;
-
+        this.furniture = furniture;
+        this.facilities = facilities;
+        this.security = security;
 
     }
+
+
 
     public String getId() {
         return id;

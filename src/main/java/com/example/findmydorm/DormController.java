@@ -4,15 +4,21 @@ package com.example.findmydorm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/dorms")
 public class DormController {
 
+
+    @Autowired
+    private ReviewService reviewService;
     @Autowired
     private DormService dormService;
+
 
     @PostMapping("/add")
     public String addDorm(@RequestBody Dorm dorm) {
@@ -46,5 +52,15 @@ public class DormController {
     public Dorm getDormById(@PathVariable String id) {
         return dormService.getDormById(id);
     }
+
+
+    @GetMapping("/{id}/with-reviews")
+    public DormWithReviewsDTO getDormWithReviews(@PathVariable String id) {
+        Dorm dorm = dormService.getDormById(id); // ดึง dorm
+        List<Review> reviews = reviewService.getReviewsByDormId(id); // ดึง reviews
+        return new DormWithReviewsDTO(dorm, reviews);
+    }
+
+
 
 }
